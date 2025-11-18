@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Accomplishments - Tanjim Taharat Aurpa</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --dark-bg: #1e293b;
+      --dark-text: #f1f5f9;
+      --dark-text-light: #cbd5e1;
+      --dark-hover: #334155;
+      --text: #1f2937;
+      --text-light: #4b5563;
+      --bg-light: #f9fafb;
+      --card-bg: #ffffff;
+      --border-light: #e2e8f0;
+      --accent: #3b82f6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .container { display: flex; min-height: 100vh; }
+
+    /* Sidebar */
+    .sidebar {
+      background: var(--dark-bg);
+      width: 300px;
+      flex-shrink: 0;
+      padding: 2.5rem 2rem;
+      position: fixed;
+      top: 0; left: 0; height: 100%;
+      overflow-y: auto;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+      border-right: 1px solid #334155;
+      z-index: 1000;
+    }
+
+    .profile-img {
+      width:  130px; height: 130px; border-radius: 50%;
+      object-fit: cover; border: 5px solid var(--primary);
+      margin: 0 auto 1.2rem; display: block;
+      box-shadow: 0 4px 15px rgba(37,99,235,0.2);
+    }
+
+    .name {
+      font-size: 1.6rem; font-weight: 700; text-align: center;
+      color: var(--dark-text); margin-bottom: 0.5rem;
+    }
+
+    .social-links {
+      display: flex; justify-content: center; gap: 1rem; margin: 1.5rem 0;
+    }
+    .social-links a {
+      color: var(--dark-text-light); font-size: 1.4rem; transition: all 0.3s;
+    }
+    .social-links a:hover { color: var(--primary); transform: translateY(-2px); }
+
+    .nav-menu a {
+      color: var(--dark-text-light); text-decoration: none;
+      display: flex; align-items: center; gap: 0.9rem;
+      padding: 0.75rem 1rem; border-radius: 8px;
+      transition: all 0.3s; font-weight: 500;
+    }
+    .nav-menu a:hover, .nav-menu a.active {
+      background: var(--dark-hover); color: var(--primary); font-weight: 600;
+    }
+
+    .copyright {
+      margin-top: 4rem; text-align: center; font-size: 0.85rem;
+      color: var(--dark-text-light); padding-top: 2rem; border-top: 1px solid #334155;
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+      display: none;
+      position: fixed;
+      top: 1rem; left: 1rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      font-size: 1.5rem;
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      z-index: 1100;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(37,99,235,0.3);
+    }
+
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; }
+
+    /* Main Content */
+    .main-content {
+      flex: 1; margin-left: 300px; padding: 4rem 3rem;
+      background: white; min-height: 100vh;
+    }
+
+    .section-title {
+      font-size: 2.2rem; font-weight: 700; color: var(--text);
+      margin-bottom: 2.5rem; position: relative; padding-bottom: 0.8rem;
+    }
+    .section-title::after {
+      content: ''; position: absolute; left: 0; bottom: 0;
+      width: 70px; height: 5px; background: var(--primary); border-radius: 3px;
+    }
+
+    /* Tabs */
+    .accomp-tabs {
+      display: flex; gap: 1rem; margin-bottom: 2.5rem; padding-bottom: 1rem;
+      border-bottom: 2px solid #e2e8f0; flex-wrap: wrap;
+    }
+    .accomp-tabs button {
+      background: none; border: none; padding: 0.7rem 1.4rem;
+      font-size: 1rem; font-weight: 600; color: var(--text-light);
+      cursor: pointer; border-radius: 8px 8px 0 0;
+      transition: all 0.3s;
+    }
+    .accomp-tabs button.active {
+      background: var(--primary); color: white;
+    }
+
+    /* Grid & Cards */
+    .accomp-grid { display: flex; flex-direction: column; gap: 2rem; }
+    .accomp-category { display: none; }
+    .accomp-category.active { display: flex; flex-direction: column; gap: 2rem; }
+
+    .accomp-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .accomp-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      position: relative;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .accomp-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    }
+
+    /* View Button (Top Right) */
+    .accomp-view-btn {
+      position: absolute;
+      top: 0.8rem;
+      right: 0.8rem;
+      background: rgba(255,255,255,0.95);
+      color: var(--primary);
+      border: 1.5px solid var(--primary);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      z-index: 10;
+    }
+    .accomp-view-btn:hover {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .accomp-header {
+      background: var(--primary);
+      color: white;
+      padding: 1.2rem 1.5rem;
+      font-weight: 600;
+      font-size: 1.15rem;
+    }
+
+    .accomp-body {
+      padding: 1.5rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .accomp-desc {
+      color: var(--text-light);
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      flex-grow: 1;
+    }
+
+    .accomp-full-desc {
+      display: none;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px dashed #cbd5e1;
+      color: #555;
+      font-size: 0.94rem;
+      line-height: 1.7;
+    }
+    .accomp-full-desc.active { display: block; }
+
+    .accomp-type {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      margin-bottom: 0.8rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+    }
+    .accomp-type:before {
+      content: "•";
+      color: var(--primary);
+      font-weight: bold;
+      margin-right: 0.5rem;
+    }
+
+    .accomp-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 1rem;
+    }
+
+    .accomp-date {
+      background: #dbeafe;
+      color: #1d4ed8;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+    }
+
+    .accomp-link {
+      color: var(--primary);
+      font-size: 1.3rem;
+      transition: all 0.3s;
+    }
+    .accomp-link:hover {
+      transform: scale(1.2);
+      color: #1d4ed8;
+    }
+
+    .divider {
+      height: 1px;
+      background: #e2e8f0;
+      margin: 1.2rem 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .accomp-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 991px) {
+      .sidebar { position: fixed; left: -300px; transition: left 0.3s ease; z-index: 1000; }
+      .sidebar.open { left: 0; }
+      .hamburger, .overlay { display: flex; }
+      .main-content { margin-left: 0; padding: 7rem 1.5rem 3rem; }
+      .accomp-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="hamburger" id="hamburgerBtn">
+    <i class="fas fa-bars"></i>
+  </button>
+  <div class="overlay" id="overlay"></div>
+
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div style="text-align: center;">
+        <img src="mam.jpg" alt="Tanjim Taharat Aurpa" class="profile-img">
+        <h2 class="name">Tanjim Taharat Aurpa</h2>
+      </div>
+
+       <div class="social-links">
+        <a href="mailto:aurpa0001@uftb.ac.bd" aria-label="Email" target="_blank"><i class="fas fa-envelope"></i></a>
+        <a href="https://www.linkedin.com/in/tanjim-taharat-aurpa" aria-label="LinkedIn" target="_blank"><i class="fab fa-linkedin"></i></a>
+       <a href="https://scholar.google.com/citations?user=L2OPFJgAAAAJ&hl=en" aria-label="Google Scholar" target="_blank"><i class="fas fa-graduation-cap"></i></a>
+       <a href="https://www.researchgate.net/profile/Tanjim-Taharat-Aurpa-2" aria-label="ResearchGate" target="_blank"><i class="fab fa-researchgate"></i></a>
+       <a href="https://aurpa22.github.io/pdf_view.html#" aria-label="GitHub" target="_blank"><i class="fab fa-github"></i></a>
+      </div>
+
+      <ul class="nav-menu">
+        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="experience.html"><i class="fas fa-briefcase"></i> Experience</a></li>
+        <li><a href="education.html"><i class="fas fa-user-graduate"></i> Education</a></li>
+        <li><a href="publications.html"><i class="fas fa-book"></i> Publications</a></li>
+        <li><a href="skills.html"><i class="fas fa-cogs"></i> Skills</a></li>
+        <li><a href="service.html"><i class="fas fa-hands-helping"></i> Academic Service</a></li>
+        <li><a href="activities.html"><i class="fas fa-running"></i> Extracurricular Activities</a></li>
+        <li><a href="workshops.html"><i class="fas fa-chalkboard-teacher"></i> Seminars & Workshops</a></li>
+        <li><a href="accomplishments.html" class="active"><i class="fas fa-trophy"></i> Accomplishments</a></li>
+      </ul>
+
+      <p class="copyright">© 2025 | Tanjim Taharat Aurpa</p>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <section id="accomplishments">
+        <h1 class="section-title">Accomplishments</h1>
+
+        <div class="accomp-tabs">
+          <button class="active" data-tab="award">Awards</button>
+          <button data-tab="research">Research Grants</button>
+          <button data-tab="fellowship">Fellowships</button>
+        </div>
+
+        <div class="accomp-grid">
+
+          <!-- AWARDS -->
+          <div class="accomp-category active" id="award">
+            <div class="accomp-row">
+
+              <div class="accomp-card">
+                <button class="accomp-view-btn" onclick="this.closest('.accomp-card').querySelector('.accomp-full-desc').classList.toggle('active')">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <div class="accomp-header">Research Publication Award</div>
+                <div class="accomp-body">
+                  <div class="accomp-full-desc">Awarded for outstanding research contributions and publications in high-impact journals.</div>
+                  <div class="divider"></div>
+                  <p class="accomp-type">University Award</p>
+                  <div class="accomp-footer">
+                    <span class="accomp-date">2024</span>
+                    <a href="#" class="accomp-link" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accomp-card">
+                <button class="accomp-view-btn" onclick="this.closest('.accomp-card').querySelector('.accomp-full-desc').classList.toggle('active')">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <div class="accomp-header">Miyan Publication Award</div>
+                <div class="accomp-body">
+                  <div class="accomp-full-desc">Recognized for significant research contributions and publications during tenure at IUBAT.</div>
+                  <div class="divider"></div>
+                  <p class="accomp-type">Institutional Award</p>
+                  <div class="accomp-footer">
+                    <span class="accomp-date">2022</span>
+                    <a href="#" class="accomp-link" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accomp-card">
+                <button class="accomp-view-btn" onclick="this.closest('.accomp-card').querySelector('.accomp-full-desc').classList.toggle('active')">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <div class="accomp-header">Best Paper Award</div>
+                <div class="accomp-body">
+                  <div class="accomp-full-desc">Awarded for the paper "Discovering and Tracking Query Oriented Topical Clusters in Online Social Networks" at IEEE TENSYMP 2020.</div>
+                  <div class="divider"></div>
+                  <p class="accomp-type">Conference Award</p>
+                  <div class="accomp-footer">
+                    <span class="accomp-date">2020</span>
+                    <a href="https://ieeexplore.ieee.org/document/9230994" class="accomp-link" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accomp-card">
+                <button class="accomp-view-btn" onclick="this.closest('.accomp-card').querySelector('.accomp-full-desc').classList.toggle('active')">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <div class="accomp-header">The Duke of Edinburgh's Award (Direct Gold)</div>
+                <div class="accomp-body">
+                  <div class="accomp-full-desc">Prestigious international youth achievement award recognizing skills development, physical recreation, voluntary service, and adventurous journey.</div>
+                  <div class="divider"></div>
+                  <p class="accomp-type">International Youth Award</p>
+                  <div class="accomp-footer">
+                    <span class="accomp-date">2020-2021</span>
+                    <a href="https://www.dofe.org" class="accomp-link" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- RESEARCH GRANTS -->
+          <div class="accomp-category" id="research">
+            <div class="accomp-row">
+
+              <div class="accomp-card">
+                <button class="accomp-view-btn" onclick="this.closest('.accomp-card').querySelector('.accomp-full-desc').classList.toggle('active')">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <div class="accomp-header">University Grants Commission Research Grant 2024-25</div>
+                <div class="accomp-body">
+                  <div class="accomp-full-desc">Research project: "Aspect based sentiment Analysis on Ukraine-Russia War" - 6 months duration.</div>
+                  <div class="divider"></div>
+                  <p class="accomp-type">Research Grant</p>
+                  <div class="accomp-footer">
+                    <span class="accomp-date">2024-25</span>
+                    <a href="#" class="accomp-link" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accomp-card">
+                <button class="accomp-view-btn" onclick="this.closest('.accomp-card').querySelector('.accomp-full-desc').classList.toggle('active')">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <div class="accomp-header">University Grants Commission Research Grant 2023-24</div>
+                <div class="accomp-body">
+                  <div class="accomp-full-desc">Research project: "Multiple Choice Question Answering" - 6 months duration.</div>
+                  <div class="divider"></div>
+                  <p class="accomp-type">Research Grant</p>
+                  <div class="accomp-footer">
+                    <span class="accomp-date">2023-24</span>
+                    <a href="#" class="accomp-link" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- FELLOWSHIPS -->
+          <div class="accomp-category" id="fellowship">
+            <div class="accomp-row">
+
+              <div class="accomp-card">
+                <button class="accomp-view-btn" onclick="this.closest('.accomp-card').querySelector('.accomp-full-desc').classList.toggle('active')">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <div class="accomp-header">National Science and Technology Fellowship</div>
+                <div class="accomp-body">
+                  <div class="accomp-full-desc">M.Sc. thesis grant for research on "Multi-label Instruction Classification" - BDT 150,000 + stipend by Ministry of Science and Technology, Bangladesh.</div>
+                  <div class="divider"></div>
+                  <p class="accomp-type">Government Fellowship</p>
+                  <div class="accomp-footer">
+                    <span class="accomp-date">2022-23</span>
+                    <a href="#" class="accomp-link" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    hamburgerBtn?.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('active');
+    });
+
+    overlay?.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+    });
+
+    document.querySelectorAll('.accomp-tabs button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.accomp-tabs button').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.accomp-category').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.accomp-card')) {
+        document.querySelectorAll('.accomp-full-desc.active').forEach(el => el.classList.remove('active'));
+      }
+    });
+  </script>
+</body>
+</html>
+[file content end]

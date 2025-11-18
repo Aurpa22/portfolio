@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Experience - Tanjim Taharat Aurpa</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --primary: #2563eb;     /* Bright blue */
+      --dark-bg: #1e293b;     /* Dark sidebar background */
+      --dark-text: #f1f5f9;   /* Light text for dark background */
+      --dark-text-light: #cbd5e1; /* Lighter text for dark background */
+      --dark-border: #334155; /* Border for dark sidebar */
+      --dark-hover: #334155;  /* Hover background for dark sidebar */
+      --text: #1f2937;        /* Main text */
+      --text-light: #4b5563;
+      --border: #e5e7eb;
+      --bg-light: #f9fafb;
+      --badge-bg: #dbeafe;
+      --badge-text: #1d4ed8;
+      --timeline-line: #d1d5db;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .container { display: flex; min-height: 100vh; }
+
+    /* Sidebar - Dark Theme */
+    .sidebar {
+      background: var(--dark-bg);
+      width: 300px;
+      flex-shrink: 0;
+      padding: 2.5rem 2rem;
+      position: fixed;
+      top: 0; left: 0; height: 100%;
+      overflow-y: auto;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+      border-right: 1px solid var(--dark-border);
+    }
+
+    .profile-img {
+      width: 130px; height: 130px; border-radius: 50%;
+      object-fit: cover; border: 5px solid var(--primary);
+      margin: 0 auto 1.2rem; display: block;
+      box-shadow: 0 4px 15px rgba(37,99,235,0.2);
+    }
+
+    .name {
+      font-size: 1.6rem; font-weight: 700; text-align: center;
+      color: var(--dark-text); margin-bottom: 0.5rem;
+    }
+
+    .social-links {
+      display: flex; justify-content: center; gap: 1rem; margin: 1.5rem 0;
+    }
+    .social-links a {
+      color: var(--dark-text-light); font-size: 1.4rem; transition: all 0.3s;
+    }
+    .social-links a:hover { color: var(--primary); transform: translateY(-2px); }
+
+    .nav-menu {
+      list-style: none; margin-top: 2rem;
+    }
+    .nav-menu a {
+      color: var(--dark-text-light); text-decoration: none;
+      display: flex; align-items: center; gap: 0.9rem;
+      padding: 0.75rem 1rem; border-radius: 8px;
+      transition: all 0.3s; font-weight: 500;
+    }
+    .nav-menu a:hover, .nav-menu a.active {
+      background: var(--dark-hover); color: var(--primary); font-weight: 600;
+    }
+    .nav-menu i { width: 22px; text-align: center; }
+
+    .copyright {
+      margin-top: 4rem; text-align: center; font-size: 0.85rem;
+      color: var(--dark-text-light); padding-top: 2rem; border-top: 1px solid var(--dark-border);
+    }
+
+    /* Mobile Hamburger */
+    .hamburger {
+      display: none; position: fixed; top: 1rem; left: 1rem;
+      background: var(--primary); color: white; border: none;
+      font-size: 1.5rem; width: 48px; height: 48px; border-radius: 50%;
+      z-index: 1100; cursor: pointer; box-shadow: 0 4px 15px rgba(37,99,235,0.3);
+    }
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; }
+
+    /* Main Content */
+    .main-content {
+      flex: 1; margin-left: 300px; padding: 4rem 3rem;
+      background: white; min-height: 100vh;
+    }
+
+    .section-title {
+      font-size: 2.2rem; font-weight: 700; color: var(--text);
+      margin-bottom: 2.5rem; position: relative; padding-bottom: 0.8rem;
+    }
+    .section-title::after {
+      content: ''; position: absolute; left: 0; bottom: 0;
+      width: 70px; height: 5px; background: var(--primary); border-radius: 3px;
+    }
+
+    /* Timeline */
+    .timeline {
+      position: relative; padding-left: 2rem;
+    }
+    .timeline::before {
+      content: ''; position: absolute; left: 12px; top: 10px; bottom: 0;
+      width: 3px; background: var(--timeline-line);
+    }
+
+    .timeline-item {
+      position: relative; margin-bottom: 3.5rem; padding-left: 3.5rem;
+    }
+    .timeline-item::before {
+      content: ''; position: absolute; left: 0; top: 8px;
+      width: 24px; height: 24px; border-radius: 50%;
+      background: white; border: 6px solid var(--primary);
+      box-shadow: 0 0 0 4px rgba(37,99,235,0.15);
+    }
+
+    .job-title {
+      font-size: 1.35rem; font-weight: 700; color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+    .job-title span { font-weight: 500; color: #6366f1; font-size: 1rem; }
+
+    .job-meta {
+      font-size: 1rem; color: var(--text-light); margin-bottom: 0.6rem;
+      font-weight: 500;
+    }
+
+    .duration-badge {
+      display: inline-block; background: var(--badge-bg);
+      color: var(--badge-text); font-size: 0.85rem; font-weight: 600;
+      padding: 0.4rem 0.9rem; border-radius: 20px; margin-bottom: 1rem;
+    }
+
+    .job-desc ul {
+      list-style: disc; padding-left: 1.5rem; margin-top: 1rem;
+    }
+    .job-desc li {
+      margin-bottom: 0.8rem; font-size: 1rem; color: #374151;
+      line-height: 1.7;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 991px) {
+      .sidebar {
+        position: fixed; left: -300px; width: 280px; transition: left 0.3s ease;
+        padding: 6rem 1.5rem 2rem; z-index: 1000;
+      }
+      .sidebar.open { left: 0; }
+      .hamburger, .overlay { display: block; }
+      .overlay.active { opacity: 1; visibility: visible; }
+      .main-content { margin-left: 0; padding: 7rem 1.5rem 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="hamburger" id="hamburgerBtn">
+    <i class="fas fa-bars"></i>
+  </button>
+  <div class="overlay" id="overlay"></div>
+
+  <div class="container">
+    <!-- Sidebar (Dark Theme) -->
+    <aside class="sidebar" id="sidebar">
+      <div style="text-align: center;">
+        <img src="mam.jpg" alt="Tanjim Taharat Aurpa" class="profile-img">
+        <h2 class="name">Tanjim Taharat Aurpa</h2>
+      </div>
+
+      <div class="social-links">
+        <a href="mailto:aurpa0001@uftb.ac.bd" aria-label="Email" target="_blank"><i class="fas fa-envelope"></i></a>
+        <a href="https://www.linkedin.com/in/tanjim-taharat-aurpa" aria-label="LinkedIn" target="_blank"><i class="fab fa-linkedin"></i></a>
+       <a href="https://scholar.google.com/citations?user=L2OPFJgAAAAJ&hl=en" aria-label="Google Scholar" target="_blank"><i class="fas fa-graduation-cap"></i></a>
+       <a href="https://www.researchgate.net/profile/Tanjim-Taharat-Aurpa-2" aria-label="ResearchGate" target="_blank"><i class="fab fa-researchgate"></i></a>
+       <a href="https://aurpa22.github.io/pdf_view.html#" aria-label="GitHub" target="_blank"><i class="fab fa-github"></i></a>
+      </div>
+
+      <ul class="nav-menu">
+        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="experience.html" class="active"><i class="fas fa-briefcase"></i> Experience</a></li>
+        <li><a href="education.html"><i class="fas fa-user-graduate"></i> Education</a></li>
+        <li><a href="publications.html"><i class="fas fa-book"></i> Publications</a></li>
+        <li><a href="skills.html"><i class="fas fa-cogs"></i> Skills</a></li>
+        <li><a href="service.html"><i class="fas fa-hands-helping"></i> Academic Service</a></li>
+        <li><a href="activities.html"><i class="fas fa-running"></i> Extracurricular Activities</a></li>
+        <li><a href="workshops.html"><i class="fas fa-chalkboard-teacher"></i> Seminars & Workshops</a></li>
+        <li><a href="accomplishments.html"><i class="fas fa-trophy"></i> Accomplishments</a></li>
+      </ul>
+
+      <p class="copyright">© 2025 | Tanjim Taharat Aurpa</p>
+    </aside>
+
+    <!-- Scrollable Experience Content -->
+    <main class="main-content">
+      <section id="experience">
+        <h1 class="section-title">Professional Experience</h1>
+
+        <div class="timeline">
+
+          <!-- Award Leader -->
+          <div class="timeline-item">
+            <div class="job-title">AWARD LEADER <span>(Volunteer)</span></div>
+            <div class="job-meta">The Duke of Edinburgh's Award</div>
+            <div class="duration-badge">Mar 2025 – Present</div>
+            <div class="job-desc">
+              <ul>
+                <li>Leading and mentoring participants in achieving their Duke of Edinburgh's Award</li>
+                <li>Facilitating skill development, physical recreation, and community service activities</li>
+                <li>Supporting youth in personal development and leadership skills</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Lecturer - Data Science -->
+          <div class="timeline-item">
+            <div class="job-title">LECTURER <span>(Full-time)</span></div>
+            <div class="job-meta">Department of Data Science and Engineering, University of Frontier Technology, Bangladesh</div>
+            <div class="duration-badge">Feb 2024 – Present</div>
+            <div class="job-desc">
+              <ul>
+                <li>Teaching undergraduate courses in Data Science, Machine Learning, and AI</li>
+                <li>Supervising student research projects and theses</li>
+                <li>Developing curriculum and course materials for data science programs</li>
+                <li>Conducting research in Natural Language Processing and Deep Learning</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Lecturer - Educational Technology -->
+          <div class="timeline-item">
+            <div class="job-title">LECTURER <span>(Full-time)</span></div>
+            <div class="job-meta">Department of Educational Technology, University of Frontier Technology, Bangladesh</div>
+            <div class="duration-badge">Aug 2023 – Feb 2024</div>
+            <div class="job-desc">
+              <ul>
+                <li>Taught courses on educational technology and digital learning</li>
+                <li>Integrated AI and machine learning concepts into educational technology curriculum</li>
+                <li>Developed innovative teaching methodologies using technology</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Lecturer - IUBAT -->
+          <div class="timeline-item">
+            <div class="job-title">LECTURER <span>(Full-time)</span></div>
+            <div class="job-meta">International University of Business Agriculture and Technology</div>
+            <div class="duration-badge">Sep 2022 – Aug 2023</div>
+            <div class="job-desc">
+              <ul>
+                <li>Taught computer science and engineering courses</li>
+                <li>Supervised undergraduate projects and research</li>
+                <li>Received Miyan Publication Award for research contributions</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Research Assistant -->
+          <div class="timeline-item">
+            <div class="job-title">RESEARCH ASSISTANT <span>(Part-time)</span></div>
+            <div class="job-meta">Artificial Intelligence and Cybernetics (AGenCy) Lab, Independent University Bangladesh</div>
+            <div class="duration-badge">Mar 2022 – Jun 2022</div>
+            <div class="job-desc">
+              <ul>
+                <li>Conducted research in Natural Language Processing and AI</li>
+                <li>Assisted in developing transformer-based models for Bangla text processing</li>
+                <li>Collaborated on research papers and experimental design</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    hamburgerBtn?.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('active');
+    });
+
+    overlay?.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+    });
+
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth < 992) {
+          sidebar.classList.remove('open');
+          overlay.classList.remove('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+[file content end]

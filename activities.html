@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Extracurricular Activities - Tanjim Taharat Aurpa</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --dark-bg: #1e293b;
+      --dark-text: #f1f5f9;
+      --dark-text-light: #cbd5e1;
+      --dark-border: #334155;
+      --dark-hover: #334155;
+      --text: #1f2937;
+      --text-light: #4b5563;
+      --bg-light: #f9fafb;
+      --timeline-line: #2563eb;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .container { display: flex; min-height: 100vh; }
+
+    /* Sidebar - Same as all pages */
+    .sidebar {
+      background: var(--dark-bg);
+      width: 300px;
+      flex-shrink: 0;
+      padding: 2.5rem 2rem;
+      position: fixed;
+      top: 0; left: 0; height: 100%;
+      overflow-y: auto;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+      border-right: 1px solid var(--dark-border);
+    }
+
+    .profile-img {
+      width: 130px; height: 130px; border-radius: 50%;
+      object-fit: cover; border: 5px solid var(--primary);
+      margin: 0 auto 1.2rem; display: block;
+      box-shadow: 0 4px 15px rgba(37,99,235,0.2);
+    }
+
+    .name {
+      font-size: 1.6rem; font-weight: 700; text-align: center;
+      color: var(--dark-text); margin-bottom: 0.5rem;
+    }
+
+    .social-links a { color: var(--dark-text-light); font-size: 1.4rem; transition: all 0.3s; }
+    .social-links a:hover { color: var(--primary); transform: translateY(-2px); }
+
+    .nav-menu a {
+      color: var(--dark-text-light); text-decoration: none;
+      display: flex; align-items: center; gap: 0.9rem;
+      padding: 0.75rem 1rem; border-radius: 8px;
+      transition: all 0.3s; font-weight: 500;
+    }
+    .nav-menu a:hover, .nav-menu a.active {
+      background: var(--dark-hover); color: var(--primary); font-weight: 600;
+    }
+
+    .copyright {
+      margin-top: 4rem; text-align: center; font-size: 0.85rem;
+      color: var(--dark-text-light); padding-top: 2rem; border-top: 1px solid var(--dark-border);
+    }
+
+    /* Mobile Hamburger */
+    .hamburger {
+      display: none; position: fixed; top: 1rem; left: 1rem;
+      background: var(--primary); color: white; border: none;
+      font-size: 1.5rem; width: 48px; height: 48px; border-radius: 50%;
+      align-items: center; justify-content: center;
+      z-index: 1100; cursor: pointer; box-shadow: 0 4px 15px rgba(37,99,235,0.3);
+    }
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; }
+
+    /* Main Content */
+    .main-content {
+      flex: 1; margin-left: 300px; padding: 4rem 3rem;
+      background: white; min-height: 100vh;
+    }
+
+    .section-title {
+      font-size: 2.2rem; font-weight: 700; color: var(--text);
+      margin-bottom: 2.5rem; position: relative; padding-bottom: 0.8rem;
+    }
+    .section-title::after {
+      content: ''; position: absolute; left: 0; bottom: 0;
+      width: 70px; height: 5px; background: var(--primary); border-radius: 3px;
+    }
+
+    /* Activities Timeline - Exactly like the screenshot */
+    .activities-timeline {
+      position: relative; padding-left: 2.5rem;
+    }
+    .activities-timeline::before {
+      content: ''; position: absolute; left: 13px; top: 10px; bottom: 20px;
+      width: 3px; background: var(--primary);
+    }
+
+    .activity-item {
+      position: relative; margin-bottom: 3rem; padding-left: 3.5rem;
+    }
+    .activity-item::before {
+      content: ''; position: absolute; left: 0; top: 8px;
+      width: 26px; height: 26px; border-radius: 50%;
+      background: white; border: 6px solid var(--primary);
+      box-shadow: 0 0 0 4px rgba(37,99,235,0.15);
+    }
+
+    .activity-role {
+      font-size: 1.35rem; font-weight: 700; color: var(--text);
+      margin-bottom: 0.4rem; text-transform: uppercase;
+    }
+
+    .activity-desc {
+      font-size: 1.1rem; color: var(--text-light); margin-bottom: 0.6rem;
+      font-weight: 500;
+    }
+    .activity-desc i {
+      color: var(--primary); margin-left: 0.4rem;
+    }
+
+    .activity-date {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1d4ed8;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.45rem 1rem;
+      border-radius: 20px;
+    }
+
+    @media (max-width: 991px) {
+      .sidebar {
+        position: fixed; left: -300px; width: 280px; transition: left 0.3s ease;
+        padding: 6rem 1.5rem 2rem; z-index: 1000;
+      }
+      .sidebar.open { left: 0; }
+      .hamburger, .overlay { display: flex; }
+      .overlay.active { opacity: 1; visibility: visible; }
+      .main-content { margin-left: 0; padding: 7rem 1.5rem 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="hamburger" id="hamburgerBtn">
+    <i class="fas fa-bars"></i>
+  </button>
+  <div class="overlay" id="overlay"></div>
+
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div style="text-align: center;">
+        <img src="mam.jpg" alt="Tanjim Taharat Aurpa" class="profile-img">
+        <h2 class="name">Tanjim Taharat Aurpa</h2>
+      </div>
+
+      <div class="social-links">
+        <a href="mailto:aurpa0001@uftb.ac.bd" aria-label="Email" target="_blank"><i class="fas fa-envelope"></i></a>
+        <a href="https://www.linkedin.com/in/tanjim-taharat-aurpa" aria-label="LinkedIn" target="_blank"><i class="fab fa-linkedin"></i></a>
+       <a href="https://scholar.google.com/citations?user=L2OPFJgAAAAJ&hl=en" aria-label="Google Scholar" target="_blank"><i class="fas fa-graduation-cap"></i></a>
+       <a href="https://www.researchgate.net/profile/Tanjim-Taharat-Aurpa-2" aria-label="ResearchGate" target="_blank"><i class="fab fa-researchgate"></i></a>
+       <a href="https://aurpa22.github.io/pdf_view.html#" aria-label="GitHub" target="_blank"><i class="fab fa-github"></i></a>
+      </div>
+
+      <ul class="nav-menu">
+        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="experience.html"><i class="fas fa-briefcase"></i> Experience</a></li>
+        <li><a href="education.html"><i class="fas fa-user-graduate"></i> Education</a></li>
+        <li><a href="publications.html"><i class="fas fa-book"></i> Publications</a></li>
+        <li><a href="skills.html"><i class="fas fa-cogs"></i> Skills</a></li>
+        <li><a href="service.html"><i class="fas fa-hands-helping"></i> Academic Service</a></li>
+        <li><a href="activities.html" class="active"><i class="fas fa-running"></i> Extracurricular Activities</a></li>
+        <li><a href="workshops.html"><i class="fas fa-chalkboard-teacher"></i> Seminars & Workshops</a></li>
+        <li><a href="accomplishments.html"><i class="fas fa-trophy"></i> Accomplishments</a></li>
+      </ul>
+
+      <p class="copyright">© 2025 | Tanjim Taharat Aurpa</p>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <section id="activities">
+        <h1 class="section-title">Extracurricular Activities</h1>
+
+        <div class="activities-timeline">
+
+          <div class="activity-item">
+            <div class="activity-role">Award Leader</div>
+            <div class="activity-desc">The Duke of Edinburgh's Award - Youth Development Program <i class="fas fa-award"></i></div>
+            <span class="activity-date">Mar 2025 – Present</span>
+          </div>
+
+          <div class="activity-item">
+            <div class="activity-role">Research Mentor</div>
+            <div class="activity-desc">Guiding undergraduate students in research projects and publications <i class="fas fa-graduation-cap"></i></div>
+            <span class="activity-date">2023 – Present</span>
+          </div>
+
+          <div class="activity-item">
+            <div class="activity-role">Academic Volunteer</div>
+            <div class="activity-desc">Participated in university outreach and student mentoring programs <i class="fas fa-hands-helping"></i></div>
+            <span class="activity-date">2022 – 2024</span>
+          </div>
+
+          <div class="activity-item">
+            <div class="activity-role">Student Researcher</div>
+            <div class="activity-desc">Active participation in research groups and academic collaborations during graduate studies <i class="fas fa-flask"></i></div>
+            <span class="activity-date">2017 – 2023</span>
+          </div>
+
+          <div class="activity-item">
+            <div class="activity-role">Campus Ambassador</div>
+            <div class="activity-desc">Represented university in various academic and cultural events <i class="fas fa-users"></i></div>
+            <span class="activity-date">2018 – 2022</span>
+          </div>
+
+          <div class="activity-item">
+            <div class="activity-role">Tech Club Member</div>
+            <div class="activity-desc">Active member of computer science and programming clubs <i class="fas fa-laptop-code"></i></div>
+            <span class="activity-date">2017 – 2021</span>
+          </div>
+
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    hamburgerBtn?.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('active');
+    });
+
+    overlay?.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+    });
+
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth < 992) {
+          sidebar.classList.remove('open');
+          overlay.classList.remove('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+[file content end]
